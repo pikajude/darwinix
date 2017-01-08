@@ -182,6 +182,10 @@ PKG_CHECK_MODULES([SQLITE3], [sqlite3 >= 3.6.19], [CXXFLAGS="$SQLITE3_CFLAGS $CX
 PKG_CHECK_MODULES([LIBCURL], [libcurl], [CXXFLAGS="$LIBCURL_CFLAGS $CXXFLAGS"])
 
 
+# Look for yaml-cpp, a required dependency.
+PKG_CHECK_MODULES([LIBYAML], [yaml-cpp], [CXXFLAGS="$LIBYAML_FLAGS $CXXFLAGS"])
+
+
 # Look for libsodium, an optional dependency.
 PKG_CHECK_MODULES([SODIUM], [libsodium],
   [AC_DEFINE([HAVE_SODIUM], [1], [Whether to use libsodium for cryptography.])

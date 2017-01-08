@@ -25,6 +25,7 @@ Settings settings;
 
 Settings::Settings()
 {
+    xcodeIntegration = false;
     keepFailed = false;
     keepGoing = false;
     tryFallback = false;
@@ -185,6 +186,7 @@ void Settings::update()
     _get(preBuildHook, "pre-build-hook");
     _get(keepGoing, "keep-going");
     _get(keepFailed, "keep-failed");
+    _get(xcodeIntegration, "darwin-xcode-integration");
 }
 
 

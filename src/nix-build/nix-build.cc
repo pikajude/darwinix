@@ -450,7 +450,9 @@ int main(int argc, char ** argv)
                     ? Strings{"bash", "--rcfile", rcfile}
                     : Strings{"bash", rcfile};
 
-                environ = stringsToCharPtrs(envStrs).data();
+                auto envPtrs = stringsToCharPtrs(envStrs);
+
+                environ = envPtrs.data();
 
                 execvp(getEnv("NIX_BUILD_SHELL", "bash").c_str(),
                     stringsToCharPtrs(args).data());

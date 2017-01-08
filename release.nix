@@ -28,6 +28,7 @@ let
             pkgconfig sqlite libsodium boehmgc
             docbook5 docbook5_xsl
             autoconf-archive
+            libyamlcpp
           ] ++ lib.optional (!lib.inNixShell) git;
 
         configureFlags = ''
@@ -73,7 +74,7 @@ let
         src = tarball;
 
         buildInputs =
-          [ curl perl bzip2 xz openssl pkgconfig sqlite boehmgc ]
+          [ curl perl bzip2 xz openssl pkgconfig sqlite boehmgc libyamlcpp ]
           ++ lib.optional stdenv.isLinux libsodium
           ++ lib.optional stdenv.isLinux
             (aws-sdk-cpp.override {

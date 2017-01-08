@@ -70,6 +70,9 @@ struct Settings {
        subgoal of the same goal) fails. */
     bool keepGoing;
 
+    /* Whether to enable Xcode integration */
+    bool xcodeIntegration;
+
     /* Whether, if we cannot realise the known closure corresponding
        to a derivation, we should try to normalise the derivation
        instead. */

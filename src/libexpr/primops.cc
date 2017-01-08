@@ -1793,6 +1793,21 @@ static void prim_fetchTarball(EvalState & state, const Pos & pos, Value * * args
     fetch(state, pos, args, v, "fetchTarball", true);
 }
 
+std::string exec(const char* cmd) {
+  char buffer[128];
+  std::string result = "";
+  FILE* pipe(popen(cmd, "r"));
+  if(!pipe) throw EvalError("popen() failed!");
+  while(!feof(pipe)) {
+    if (fgets(buffer, 128, pipe) != NULL)
+      result += buffer;
+  }
+  int status = pclose(pipe);
+  if(WEXITSTATUS(status) != 0)
+    throw EvalError("could not execute subprocess");
+  return result.substr(0, result.find_last_not_of("\n") + 1);
+}
+
 
 /*************************************************************
  * Primop registration
@@ -1955,6 +1970,16 @@ void EvalState::createBaseEnv()
     // Networking
     addPrimOp("__fetchurl", 1, prim_fetchurl);
     addPrimOp("fetchTarball", 1, prim_fetchTarball);
+
+    if(settings.xcodeIntegration) {
+        auto xversion = exec("/usr/bin/xcrun --show-sdk-version");
+        mkString(v, xversion);
+        addConstant("__xcodeVersion", v);
+
+        auto xroot = canonPath(exec("/usr/bin/xcrun --show-sdk-path"), true);
+        mkString(v, xroot);
+        addConstant("__xcodeSDKRoot", v);
+    }
 
     /* Add a wrapper around the derivation primop that computes the
        `drvPath' and `outPath' attributes lazily. */
